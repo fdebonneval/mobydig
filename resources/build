@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -xe
+
+#-------------------------------------------------------------------------------
+# bulid dependencies
+#-------------------------------------------------------------------------------
+apt-get update
+apt-get --yes install \
+  bc \
+  build-essential \
+  cmake \
+  curl \
+  diffutils \
+  git \
+  kmod \
+  libcurl4-openssl-dev
+
+#-------------------------------------------------------------------------------
+# build
+#-------------------------------------------------------------------------------
+export KERNELVER=$(uname -r  | cut -d '-' -f 1)
+export KERNELDIR=/linux-$KERNELVER
+
+cd /
+curl -o linux-${KERNELVER}.tar.gz https://www.kernel.org/pub/linux/kernel/v4.x/linux-${KERNELVER}.tar.gz
+tar zxf linux-${KERNELVER}.tar.gz
+cd linux-${KERNELVER}
+zcat /proc/1/root/proc/config.gz > .config
+make modules_prepare
+make headers_install INSTALL_HDR_PATH=/usr
+mv .config ../config
+cd ..
+git clone https://github.com/draios/sysdig.git
+cd sysdig
+git checkout ${application_version}
+mkdir build
+cd build
+cmake ..
+KERNELDIR=/linux-$KERNELVER make driver -j $(nproc)
+make curl -j $(nproc)
+make jq -j $(nproc)
+make b64 -j $(nproc)
+make ncurses -j $(nproc)
+make sysdig -j $(nproc)
+make csysdig -j $(nproc)
+make install
+strip userspace/sysdig/sysdig
+strip userspace/sysdig/csysdig
+mkdir /export
+mv driver/sysdig-probe.ko \
+  userspace/sysdig/sysdig \
+  userspace/sysdig/csysdig \
+  /export
+
+
+#-------------------------------------------------------------------------------
+# cleanup
+#-------------------------------------------------------------------------------
+
+# sources and builds
+rm -Rf /linux-* /sysdig
+apt-get purge -y --force-yes $(cat /tmp/resources/pkg-cleanup-list)
+
+exit 0
