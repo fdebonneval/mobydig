@@ -1,5 +1,5 @@
 # sysdig-moby
-Image to run Sysdig on Docker for mac
+Image to run Sysdig on Docker for mac (but not only, it should work on a docker engine on a linux host)
 #Why ?
 Why a particular image for Docker for mac ?
 Sysdig provides a Docker image to run sysdig/csysdig on Docker but on a Linux host. As the sources os Docker for mac are not yet avaliable, there is no easy way to use the DKMS build capability of the upstream image. Finally, I could not just publish an image to the Docker Hub as kernel are upgraded often on Docker for mac.
