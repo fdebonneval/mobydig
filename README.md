@@ -9,12 +9,12 @@ Because some difficulties to reach my target comes from the fact that Docker for
 
 # Get it, build it
 
-    # git clone https://github.com/fdebonneval/sysdig-moby.git
-    # cd sysdig-moby
+    # git clone https://github.com/fdebonneval/mobydig.git
+    # cd mobydig
     # make build
 
 Build time is around 15 minutes with a decend internet access and my i5 MBP.
-After the build, the image is published in your local registry with the name `sysdig-moby:(sysdig verion)`
+After the build, the image is published in your local registry with the name `mobydig:(sysdig verion)`
 You can choose the tag/branch you want to build against by changing the VERSION variable in the Makefile
 
 # And run it
