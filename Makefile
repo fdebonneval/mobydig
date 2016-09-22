@@ -1,5 +1,5 @@
 VERSION    ?= dev
-REPOSITORY ?= sysdig-mac
+REPOSITORY ?= mobydig
 IMAGE      ?= $(REPOSITORY):$(VERSION)
 
 BUILD_OPTIONS = -t $(IMAGE)
