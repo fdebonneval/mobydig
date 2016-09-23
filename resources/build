@@ -49,11 +49,11 @@ make csysdig -j $(nproc)
 make install
 strip userspace/sysdig/sysdig
 strip userspace/sysdig/csysdig
-mkdir /export
 mv driver/sysdig-probe.ko \
-  userspace/sysdig/sysdig \
+   /usr/lib/modules-load.d/
+mv userspace/sysdig/sysdig \
   userspace/sysdig/csysdig \
-  /export
+  /usr/bin
 
 
 #-------------------------------------------------------------------------------

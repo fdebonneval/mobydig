@@ -17,6 +17,7 @@ RUN_OPTIONS += -v /dev:/host/dev
 RUN_OPTIONS += -v /proc:/host/proc:ro 
 RUN_OPTIONS += -v /lib/modules:/host/lib/modules:ro 
 RUN_OPTIONS += -v /usr:/host/usr:ro
+RUN_OPTIONS += -v /usr/bin/docker:/usr/bin/docker:ro
 
 default: csysdig
 
@@ -28,3 +29,6 @@ sysdig:
 
 csysdig:
 	docker run -it --rm $(RUN_OPTIONS) $(IMAGE) csysdig
+
+clean:
+	docker rmi $(IMAGE)

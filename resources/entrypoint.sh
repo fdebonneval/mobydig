@@ -8,7 +8,9 @@ if lsmod | grep "$MODULE" &> /dev/null ; then
   echo "Module $MODULE is loaded!"
 else
   echo "Module $MODULE is not loaded!, loading"
-  insmod /export/sysdig-probe.ko
+  insmod /usr/lib/modules-load.d/sysdig-probe.ko
 fi
 
-exec "/export/$@"
+ln -s /host/var/run/docker.sock /run/docker.sock
+
+exec "$@"
