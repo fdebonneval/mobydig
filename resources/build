@@ -7,6 +7,7 @@ cp /tmp/resources/entrypoint.sh /entrypoint.sh
 #-------------------------------------------------------------------------------
 # bulid dependencies
 #-------------------------------------------------------------------------------
+dpkg -l | awk '{print $2}' > /tmp/resources/pkg-list-pre.txt
 apt-get update
 apt-get --yes install \
   bc \
@@ -46,22 +47,26 @@ make b64 -j $(nproc)
 make ncurses -j $(nproc)
 make sysdig -j $(nproc)
 make csysdig -j $(nproc)
-make install
 strip userspace/sysdig/sysdig
 strip userspace/sysdig/csysdig
+make install
 mv driver/sysdig-probe.ko \
    /usr/lib/modules-load.d/
-mv userspace/sysdig/sysdig \
-  userspace/sysdig/csysdig \
-  /usr/bin
-
 
 #-------------------------------------------------------------------------------
 # cleanup
 #-------------------------------------------------------------------------------
 
 # sources and builds
-rm -Rf /linux-* /sysdig
-apt-get purge -y --force-yes $(cat /tmp/resources/pkg-cleanup-list)
+dpkg -l | awk '{print $2}' > /tmp/resources/pkg-list-post.txt
+apt-get purge -y --force-yes $(diff \
+    --unchanged-line-format= \
+    --old-line-format= \
+    --new-line-format='%L' \
+    /tmp/resources/pkg-list-pre.txt \
+    /tmp/resources/pkg-list-post.txt | \
+    grep -v kmod | \
+    xargs)
+rm -Rf /linux-* /sysdig /var/lib/apt
 
 exit 0
