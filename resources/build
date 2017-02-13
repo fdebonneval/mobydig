@@ -17,7 +17,8 @@ apt-get --yes install \
   diffutils \
   git \
   kmod \
-  libcurl4-openssl-dev
+  libcurl4-openssl-dev \
+  wget
 
 #-------------------------------------------------------------------------------
 # build
