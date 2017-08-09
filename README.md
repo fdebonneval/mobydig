@@ -13,7 +13,7 @@ Because some difficulties to reach my target comes from the fact that Docker for
     # cd mobydig
     # make build
 
-Build time is around 15 minutes with a decend internet access and my i5 MBP.
+Build time is around 15 minutes with a decent internet access and my i5 MBP.
 After the build, the image is published in your local registry with the name `mobydig:(sysdig verion)`
 You can choose the tag/branch you want to build against by changing the VERSION variable in the Makefile
 
